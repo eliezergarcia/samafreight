@@ -20,6 +20,24 @@ class MaintenanceController extends Controller
         //
     }
 
+    public function list($id){
+        $maintenances = Maintenance::with(['truck', 'box', 'driver', 'coordinator', 'mechanic', 'conductor'])->where('truck_id', '=', $id)->get();
+                    // ->join('boxes', 'inspections.box_id', '=', 'boxes.id')
+                    // ->join('drivers', 'inspections.driver_id', '=', 'drivers.id')
+                    // ->join('coordinators', 'inspections.coordinator_id', '=', 'coordinators.id')
+
+        return $maintenances;
+    }
+
+    public function listBox($id){
+        $maintenances = Maintenance::with(['truck', 'box', 'driver', 'coordinator', 'mechanic', 'conductor'])->where('box_id', '=', $id)->get();
+                    // ->join('boxes', 'inspections.box_id', '=', 'boxes.id')
+                    // ->join('drivers', 'inspections.driver_id', '=', 'drivers.id')
+                    // ->join('coordinators', 'inspections.coordinator_id', '=', 'coordinators.id')
+
+        return $maintenances;
+    }
+
     /**
      * Show the form for creating a new resource.
      *

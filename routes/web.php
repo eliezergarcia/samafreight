@@ -48,5 +48,11 @@ Route::get('/cajas/relaciones/{id}', 'BoxController@relations')->name('cajas.rel
 Route::get('/cajas/buscarPlacas/{id}', 'BoxController@findPlates')->name('cajas.findPlates');
 Route::resource('cajas', 'BoxController');
 
+
+Route::get('/inspecciones/listar/{id}', 'InspectionController@list')->name('inspecciones.list');
+Route::get('/inspecciones_caja/listar/{id}', 'InspectionController@listBox')->name('inspecciones.list');
 Route::resource('inspecciones', 'InspectionController');
+
+Route::get('/mantenimientos/listar/{id}', 'MaintenanceController@list')->name('mantenimientos.list');
+Route::get('/mantenimientos_caja/listar/{id}', 'MaintenanceController@listBox')->name('mantenimientos.list');
 Route::resource('mantenimientos', 'MaintenanceController');

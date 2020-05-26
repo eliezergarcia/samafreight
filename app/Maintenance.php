@@ -14,4 +14,30 @@ class Maintenance extends Model
     {
     	
     }
+
+    public function truck()
+    {
+        return $this->belongsTo(Truck::class);
+    }
+
+    public function box()
+    {
+        return $this->belongsTo(Box::class);
+    }
+
+    public function driver(){
+        return $this->belongsTo(Driver::class);
+    }
+
+    public function coordinator(){
+        return $this->belongsTo(Coordinator::class, 'firm_coordinator');
+    }
+
+    public function conductor(){
+        return $this->belongsTo(Driver::class, 'firm_conductor');
+    }
+
+    public function mechanic(){
+        return $this->belongsTo(Mechanic::class, 'firm_mechanic');
+    }
 }

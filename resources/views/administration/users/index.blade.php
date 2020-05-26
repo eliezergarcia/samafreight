@@ -343,7 +343,10 @@
 		  	},
 			methods: {
 				userAvatar(user= []){
-					return '/storage/app/' + user['avatar']
+					console.log(user);
+					let avatar = user['avatar'];
+					avatar = avatar.replace('public/', '');
+					return '/storage/' + avatar;
 				},
 		  		listUsers(){
 		  			let me = this;

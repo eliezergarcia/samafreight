@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Truck; 
 use App\Inspection;
 use App\InspectionPoint;
 use Illuminate\Http\Request;
@@ -18,6 +19,18 @@ class InspectionController extends Controller
     public function index()
     {
         //
+    }
+
+    public function list($id){
+        $inspections = Inspection::with(['truck', 'box', 'driver', 'coordinator'])->where('truck_id', '=', $id)->get();
+
+        return $inspections;
+    }
+
+    public function listBox($id){
+        $inspections = Inspection::with(['truck', 'box', 'driver', 'coordinator'])->where('box_id', '=', $id)->get();
+
+        return $inspections;
     }
 
     /**
@@ -42,6 +55,7 @@ class InspectionController extends Controller
          DB::beginTransaction();
 
         $inspection = (new Inspection)->fill($request->all());
+        // var_dump($request);
         $inspection->save();
 
         $points = InspectionPoint::where('inactive_at', null)

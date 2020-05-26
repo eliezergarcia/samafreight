@@ -1,4 +1,3 @@
-
 <!-- begin::Offcanvas Toolbar Notifications -->
 <div id="kt_offcanvas_toolbar_notifications" class="kt-offcanvas-panel">
 	<div class="kt-offcanvas-panel__head">

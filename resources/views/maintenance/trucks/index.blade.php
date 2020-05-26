@@ -1289,7 +1289,7 @@
 			      		me.boxes = response.data.boxes;
 			      		me.drivers = response.data.drivers;
 			      		me.coordinators = response.data.coordinators;
-			      		$("#truck_id").val(truck['id']);
+			      		$("#inspeccionDiarioModal #truck_id").val(truck['id']);
 			      		$("#unit_number").val(truck['number']);
 			      		$("#unit_plates").val(truck['plates']);
 						$('#inspeccionDiarioModal').modal('show');
