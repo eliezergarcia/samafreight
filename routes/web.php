@@ -50,9 +50,13 @@ Route::resource('cajas', 'BoxController');
 
 
 Route::get('/inspecciones/listar/{id}', 'InspectionController@list')->name('inspecciones.list');
+Route::get('/inspecciones/buscar/{id}', 'InspectionController@findInspection')->name('inspecciones.findInspection');
+Route::post('/inspecciones/modificar', 'InspectionController@modificar')->name('inspecciones.modificar');
 Route::get('/inspecciones_caja/listar/{id}', 'InspectionController@listBox')->name('inspecciones.list');
 Route::resource('inspecciones', 'InspectionController');
 
 Route::get('/mantenimientos/listar/{id}', 'MaintenanceController@list')->name('mantenimientos.list');
+Route::get('/mantenimientos/buscar/{id}', 'MaintenanceController@findMaintenance')->name('mantenimientos.findMaintenance');
+Route::post('/mantenimientos/modificar', 'MaintenanceController@modificar')->name('mantenimientos.modificar');
 Route::get('/mantenimientos_caja/listar/{id}', 'MaintenanceController@listBox')->name('mantenimientos.list');
 Route::resource('mantenimientos', 'MaintenanceController');

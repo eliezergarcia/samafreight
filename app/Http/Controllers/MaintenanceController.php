@@ -3,6 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Maintenance;
+use App\Box; 
+use App\Truck; 
+use App\Driver; 
+use App\Mechanic; 
+use App\Inspection;
+use App\Coordinator; 
 use App\InspectionPoint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -27,6 +33,30 @@ class MaintenanceController extends Controller
                     // ->join('coordinators', 'inspections.coordinator_id', '=', 'coordinators.id')
 
         return $maintenances;
+    }
+
+    public function findMaintenance($id){
+        $maintenance = Maintenance::with(['truck', 'box', 'driver', 'coordinator'])->where('id', '=', $id)->get();
+        $points = DB::table('assigned_points')->where('maintenance_id', '=', $id)->get();
+        $pointsMaintenance = InspectionPoint::where('inactive_at', null)->get();
+        $boxes = Box::all();
+        $trucks = Truck::with(['type', 'brand', 'service', 'owner'])->get();
+        $drivers = Driver::where('inactive_at', null)->get();
+        $coordinators = Coordinator::where('inactive_at', null)->get();
+        $mechanics = Mechanic::where('inactive_at', null)->get();
+
+        $data = [
+            'maintenance' => $maintenance['0'],
+            'points' => $points,
+            'pointsMaintenance' => $pointsMaintenance,
+            'boxes' => $boxes,
+            'trucks' => $trucks,
+            'drivers' => $drivers,
+            'coordinators' => $coordinators,
+            'mechanics' => $mechanics,
+        ];
+
+        return $data;
     }
 
     public function listBox($id){
@@ -133,6 +163,36 @@ class MaintenanceController extends Controller
     {
         //
     }
+
+    public function modificar(Request $request)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+
+        $maintenance = Maintenance::find($request->maintenance_id);
+        $maintenance->update($request->all());
+
+        $points = DB::table('assigned_points')->where('maintenance_id', '=', $request->maintenance_id)->get();
+        $pointsUpdate = $request->points_inspection;
+        // dd($pointsUpdate[0]);
+
+        for ($i=0; $i < count($points); $i++) 
+        { 
+            DB::table('assigned_points')->where('id', $points[$i]->id)
+                                        ->update([
+                'value' => $pointsUpdate[$i]
+            ]);
+        }
+
+        if($maintenance){
+            DB::commit();
+            return back()->with('success', 'El mantenimiento se ha registrado correctamente.');
+        }else{
+            DB::rollBack();
+            return back()->with('error', 'Ocurrió un problema al registrar la inspección.');
+        }
+    }
+
 
     /**
      * Remove the specified resource from storage.

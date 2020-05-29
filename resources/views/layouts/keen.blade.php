@@ -93,10 +93,10 @@ License: You must have a valid license purchased only from https://themes.getboo
 		<!-- @include('layouts.partials._topbar.offcanvas.search') -->
 
 		<!--[html-partial:include:{"file":"partials/_topbar/offcanvas/notifications.html"}]/-->
-		@include('layouts.partials._topbar.offcanvas.notifications')
+		<!-- @include('layouts.partials._topbar.offcanvas.notifications') -->
 
 		<!--[html-partial:include:{"file":"partials/_topbar/offcanvas/quick-actions.html"}]/-->
-		@include('layouts.partials._topbar.offcanvas.quick-actions')
+		<!-- @include('layouts.partials._topbar.offcanvas.quick-actions') -->
 
 		<!--[html-partial:include:{"file":"partials/_topbar/offcanvas/user.html"}]/-->
 		@include('layouts.partials._topbar.offcanvas.user')

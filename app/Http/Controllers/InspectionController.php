@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Box; 
 use App\Truck; 
+use App\Driver; 
+use App\Mechanic;
 use App\Inspection;
+use App\Coordinator; 
 use App\InspectionPoint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -25,6 +29,30 @@ class InspectionController extends Controller
         $inspections = Inspection::with(['truck', 'box', 'driver', 'coordinator'])->where('truck_id', '=', $id)->get();
 
         return $inspections;
+    }
+
+    public function findInspection($id){
+        $inspection = Inspection::with(['truck', 'box', 'driver', 'coordinator'])->where('id', '=', $id)->get();
+        $points = DB::table('assigned_points')->where('inspection_id', '=', $id)->get();
+        $pointsInspection = InspectionPoint::where('inactive_at', null)->where('type', 'TRUCK & TRAILER')->get();
+        $boxes = Box::all();
+        $trucks = Truck::with(['type', 'brand', 'service', 'owner'])->get();
+        $drivers = Driver::where('inactive_at', null)->get();
+        $coordinators = Coordinator::where('inactive_at', null)->get();
+        $mechanics = Mechanic::where('inactive_at', null)->get();
+
+        $data = [
+            'inspection' => $inspection['0'],
+            'points' => $points,
+            'pointsInspection' => $pointsInspection,
+            'boxes' => $boxes,
+            'trucks' => $trucks,
+            'drivers' => $drivers,
+            'coordinators' => $coordinators,
+            'mechanics' => $mechanics,
+        ];
+
+        return $data;
     }
 
     public function listBox($id){
@@ -114,6 +142,35 @@ class InspectionController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+
+    public function modificar(Request $request)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+
+        $inspection = Inspection::find($request->inspection_id);
+        $inspection->update($request->all());
+
+        $points = DB::table('assigned_points')->where('inspection_id', '=', $request->inspection_id)->get();
+        $pointsUpdate = $request->points_inspection;
+        // dd($pointsUpdate[0]);
+
+        for ($i=0; $i < count($points); $i++) 
+        { 
+            DB::table('assigned_points')->where('id', $points[$i]->id)
+                                        ->update([
+                'value' => $pointsUpdate[$i]
+            ]);
+        }
+
+        if($inspection){
+            DB::commit();
+            return back()->with('success', 'La inspección se ha registrado correctamente.');
+        }else{
+            DB::rollBack();
+            return back()->with('error', 'Ocurrió un problema al registrar la inspección.');
+        }
     }
 
     /**

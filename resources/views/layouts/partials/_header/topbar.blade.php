@@ -12,12 +12,12 @@
 	<!--end: Search -->
 
 	<!--begin: Notifications -->
-	<div class="kt-header__topbar-item">
+	<!-- <div class="kt-header__topbar-item">
 		<div class="kt-header__topbar-wrapper" id="kt_offcanvas_toolbar_notifications_toggler_btn">
 			<span class="kt-header__topbar-icon"><i class="flaticon2-notification"></i></span>
 			<span class="kt-badge kt-badge--brand"></span>
 		</div>
-	</div>
+	</div> -->
 
 	<!--end: Notifications -->
 
